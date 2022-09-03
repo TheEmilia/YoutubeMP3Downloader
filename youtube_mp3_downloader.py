@@ -1,18 +1,19 @@
 # importing packages
-from email.mime import audio
 from pytube import YouTube
 from pytube import Playlist
 import os
 
 # TODO ask if they want to do another before exiting
+# TODO prevent duplicate errors
 
 # ask if want to download playlist or video
 wants_playlist = input("Would you like to download a playlist? Answer N for an individual video. (Y/N) \n")
 
 # check for destination to save file
 print("Enter the destination (leave blank for default directory)")
-destination = str(input(">> ")) or './music'
+destination = str(input(">> ")) or './MP3Downloader/music'
 
+i = 0.0
 if wants_playlist == 'Y':
     # downloads each video in playlist as mp3
     # url input from user
@@ -22,6 +23,10 @@ if wants_playlist == 'Y':
     for video in playlist.videos:
         # say title
         print(f"Downloading: {video.title}")
+
+        # orders video according to playlist position
+        video.title = f'{round(i, 2)} ' + video.title
+        i += 0.01
 
         # extract only audio
         audio_of_video = video.streams.filter(only_audio=True).first()
