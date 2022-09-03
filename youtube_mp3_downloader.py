@@ -5,52 +5,29 @@ import os
 
 # TODO ask if they want to do another before exiting
 # TODO prevent duplicate errors
-
-# ask if want to download playlist or video
-wants_playlist = input("Would you like to download a playlist? Answer N for an individual video. (Y/N) \n")
+# TODO add way to select which portion of videos to download i.e. starting index and ending index, so that, if interrupted, no need to redownload all 
 
 # check for destination to save file
 print("Enter the destination (leave blank for default directory)")
 destination = str(input(">> ")) or './MP3Downloader/music'
 
 i = 0.0
-if wants_playlist == 'Y':
-    # downloads each video in playlist as mp3
-    # url input from user
-    playlist = Playlist(str(input("Enter the URL of the playlist you want to download: \n>> ")))
-        # https://www.youtube.com/playlist?list=PLDIoUOhQQPlWvtxdeVTG3i7-SlSN0jfWj Vevo 2022 Playlist - VEVO Hot This Week - New Music Videos 2022 (100 videos)
-    # for each url in a list:
-    for video in playlist.videos:
-        # say title
-        print(f"Downloading: {video.title}")
+playlist = Playlist(str(input("Enter the URL of the playlist you want to download: \n>> ")))
 
-        # orders video according to playlist position
-        video.title = f'{round(i, 2)} ' + video.title
-        i += 0.01
+# for each url in a list:
+for video in playlist.videos:
+    # say title
+    print(f"Downloading: {video.title}")
 
-        # extract only audio
-        audio_of_video = video.streams.filter(only_audio=True).first()
-        
-        # download the file
-        out_file = audio_of_video.download(output_path=destination)
-        
-        # save the file
-        base, ext = os.path.splitext(out_file)
-        new_file = base + '.mp3'
-        os.rename(out_file, new_file)
-        
-        # result of success
-        print(video.title + " has been successfully downloaded.")
-else:
-    # downloads only a single video
-    yt = YouTube(
-    str(input("Enter the URL of the video you want to download: \n>> ")))
-    
+    # orders video according to playlist position
+    video.title = f"{format(i, '.2f')} " + video.title
+    i += 0.01
+
     # extract only audio
-    video = yt.streams.filter(only_audio=True).first()
+    audio_of_video = video.streams.filter(only_audio=True).first()
     
     # download the file
-    out_file = video.download(output_path=destination)
+    out_file = audio_of_video.download(output_path=destination)
     
     # save the file
     base, ext = os.path.splitext(out_file)
@@ -58,4 +35,4 @@ else:
     os.rename(out_file, new_file)
     
     # result of success
-    print(yt.title + " has been successfully downloaded.")
+    print(video.title + " has been successfully downloaded.")\
