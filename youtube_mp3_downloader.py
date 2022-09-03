@@ -4,13 +4,14 @@ from pytube import YouTube
 from pytube import Playlist
 import os
 
+# TODO ask if they want to do another before exiting
+
 # ask if want to download playlist or video
 wants_playlist = input("Would you like to download a playlist? Answer N for an individual video. (Y/N) \n")
 
 # check for destination to save file
-print("Enter the destination (leave blank for current directory)")
-destination = str(input(">> ")) or '.'
-# C:\Users\emili\Documents\Repos\Python\MP3Downloader\music
+print("Enter the destination (leave blank for default directory)")
+destination = str(input(">> ")) or './music'
 
 if wants_playlist == 'Y':
     # downloads each video in playlist as mp3
